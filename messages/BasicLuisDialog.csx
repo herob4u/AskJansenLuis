@@ -115,7 +115,7 @@ public class BasicLuisDialog : LuisDialog<object>
         }
         else
         {
-            answer = GetQnAResponse($"How do I How do I get SPF Desktop Client {result.Entities[0].Entity} on my computer");
+            answer = GetQnAResponse($"How do I get {result.Entities[0].Entity} installed on my computer");
         }
         await context.PostAsync(answer);
 
