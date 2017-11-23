@@ -15,6 +15,7 @@ public class BasicLuisDialog : LuisDialog<object>
 {
     // Caches the user string response to a prompt dialog
     private string stringResult;
+    private string answer = string.Empty;
     
     public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(Utils.GetAppSetting("LuisAppId"), Utils.GetAppSetting("LuisAPIKey"))))
     {
@@ -27,9 +28,7 @@ public class BasicLuisDialog : LuisDialog<object>
     /// </summary>
     [LuisIntent("Define")]
     public async Task Define(IDialogContext context, LuisResult result)
-    {
-        string answer = string.Empty;
-        
+    {  
         await context.PostAsync("Define Intent:");
         
         if(result.Entities != null && result.Entities.Count <= 0)
@@ -50,17 +49,16 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("Need.Use")]
     public async Task NeedUseIntent(IDialogContext context, LuisResult result)
     {
-        string message = string.Empty;
 
         if(result.Entities == null || result.Entities.Count == 0)
         {
-            message = GetQnAResponse(result.Query);
+            answer = GetQnAResponse(result.Query);
         }
         else
         {
-            message = GetQnAResponse($"Do we still need to use {result.Entities[0].Entity}");
+            answer = GetQnAResponse($"Do we still need to use {result.Entities[0].Entity}");
         }
-        await context.PostAsync(message);
+        await context.PostAsync(answer);
 
         context.Wait(MessageReceived);
     }
@@ -85,7 +83,7 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("DefineOmar")]
     public async Task MyIntent(IDialogContext context, LuisResult result)
     {
-        string answer = GetQnAResponse("Do we still need to use iPas DM");
+        answer = GetQnAResponse("Do we still need to use iPas DM");
         await context.PostAsync(answer);
         //await context.PostAsync($"You have reached the MyIntent intent. You said: {result.Query}"); //
         context.Wait(MessageReceived);
