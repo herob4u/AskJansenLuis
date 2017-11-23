@@ -50,7 +50,18 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("Need.Use")]
     public async Task NeedUseIntent(IDialogContext context, LuisResult result)
     {
-        await context.PostAsync(result.Entities[0].Entity);
+        string message = string.Empty;
+
+        if(result.Result.Entities == null || result.Result.Entities.Count == 0)
+        {
+            message = GetQnAResponse(result.Result.Query);
+        }
+        else
+        {
+            message = GetQnAResponse($"Do we still need to use {result.Result.Entities[0].Entity}");
+        }
+        await context.PostAsync(message);
+
         context.Wait(MessageReceived);
     }
     
