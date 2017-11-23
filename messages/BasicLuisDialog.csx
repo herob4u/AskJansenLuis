@@ -122,6 +122,22 @@ public class BasicLuisDialog : LuisDialog<object>
         context.Wait(MessageReceived);
     }
     
+    [LuisIntent("How.Login")]
+    public async Task HowToLogin(IDialogContext context, LuisResult result)
+    {
+        if (result.Entities == null || result.Entities.Count == 0)
+        {
+            answer = GetQnAResponse(result.Query);
+        }
+        else
+        {
+            answer = GetQnAResponse($"How do I log in to {result.Entities[0].Entity}");
+        }
+        await context.PostAsync(answer);
+
+        context.Wait(MessageReceived);
+    }
+    
     [LuisIntent("None")]
     public async Task NoneIntent(IDialogContext context, LuisResult result)
     {
