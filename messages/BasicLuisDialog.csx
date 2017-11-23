@@ -138,6 +138,36 @@ public class BasicLuisDialog : LuisDialog<object>
         context.Wait(MessageReceived);
     }
     
+    [LuisIntent("How.Document")]
+    public async Task DocumentInfo(IDialogContext context, LuisResult result)
+    {
+        if (result.Entities == null || result.Entities.Count == 0)
+        {
+            answer = GetQnAResponse(result.Query);
+        }
+        else
+        {
+            foreach (EntityRecommendation entity in result.Entities)
+            {
+                if (entity.Entity == "Icon Color")
+                {
+                    answer = GetQnAResponse($"Why are some document icons different {entity.Entity}? What do they mean?");
+                }
+                else if (entity.Entity == "Relationship")
+                {
+                    answer = GetQnAResponse($"How can I see all the {entity.Entity} a document has with other objects?");
+                }
+                else
+                {
+                    answer = GetQnAResponse($"How do I view a document's {entity.Entity}");
+                }
+            }
+        }
+        await context.PostAsync(answer);
+
+        context.Wait(MessageReceived);
+    }
+    
     [LuisIntent("None")]
     public async Task NoneIntent(IDialogContext context, LuisResult result)
     {
