@@ -64,15 +64,15 @@ public class BasicLuisDialog : LuisDialog<object>
     }
   
     [LuisIntent("How.Set")]
-    public async Task HowToSet(IDialogContext context, LuisServiceResult result)
+    public async Task HowToSet(IDialogContext context, LuisResult result)
     {
-        if (result.Result.Entities == null || result.Result.Entities.Count == 0)
+        if (result.Entities == null || result.Entities.Count == 0)
         {
-            answer = GetQnAResponse(result.Result.Query);
+            answer = GetQnAResponse(result.Query);
         }
         else
         {
-            foreach(EntityRecommendation entity in result.Result.Entities)
+            foreach(EntityRecommendation entity in result.Entities)
             {
                 if(entity.Entity == "Look Ahead")
                 {
