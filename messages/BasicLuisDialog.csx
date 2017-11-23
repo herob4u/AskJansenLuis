@@ -76,11 +76,11 @@ public class BasicLuisDialog : LuisDialog<object>
             {
                 if(entity.Entity == "Look Ahead")
                 {
-                    answer = GetQnAResponse($"What is {entity} and when might I want to turn it off?");
+                    answer = GetQnAResponse($"What is {entity.Entity} and when might I want to turn it off?");
                 }
                 else
                 {
-                    answer = GetQnAResponse($"How do I set {entity}");
+                    answer = GetQnAResponse($"How do I set {entity.Entity}");
                 }
             }
         }
