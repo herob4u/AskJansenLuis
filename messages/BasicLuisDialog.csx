@@ -98,7 +98,7 @@ public class BasicLuisDialog : LuisDialog<object>
         }
         else
         {
-            //await context.PostAsync(result.Entities[0]);
+            await context.PostAsync(result.Entities[0].ToString());
             answer = GetQnAResponse($"How do I access {result.Entities[0].Entity}");
         }
         await context.PostAsync(answer);
