@@ -45,7 +45,7 @@ public class BasicLuisDialog : LuisDialog<object>
         await context.PostAsync(answer);
         context.Wait(MessageReceived);
     }
-    
+    /*
     
     [LuisIntent("Need.Use")]
     public async Task NeedUseIntent(IDialogContext context, LuisResult result)
@@ -64,7 +64,7 @@ public class BasicLuisDialog : LuisDialog<object>
 
         context.Wait(MessageReceived);
     }
-    
+    */
     
     [LuisIntent("None")]
     public async Task NoneIntent(IDialogContext context, LuisResult result)
@@ -90,14 +90,14 @@ public class BasicLuisDialog : LuisDialog<object>
         //await context.PostAsync($"You have reached the MyIntent intent. You said: {result.Query}"); //
         context.Wait(MessageReceived);
     }
-    
+
     [LuisIntent("Help")]
     public async Task HelpIntent(IDialogContext context, LuisResult result)
     {
         PromptDialog.Choice<string>(context, GetStringFromPrompt, LuisData.HelpTopics, "Select a Help Topic:", null, 3, PromptStyle.Auto);
         
     }
-    
+
     
     /// Handles acquiring string data from any
     /// string PromptDialog and setting the string result variable.
