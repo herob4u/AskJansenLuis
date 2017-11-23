@@ -63,6 +63,31 @@ public class BasicLuisDialog : LuisDialog<object>
         context.Wait(MessageReceived);
     }
   
+    [LuisIntent("How.Set")]
+    public async Task HowToSet(IDialogContext context, LuisServiceResult result)
+    {
+        if (result.Result.Entities == null || result.Result.Entities.Count == 0)
+        {
+            answer = GetQnAResponse(result.Result.Query);
+        }
+        else
+        {
+            foreach(EntityRecommendation entity in result.Result.Entities)
+            {
+                if(entity.Entity == "Look Ahead")
+                {
+                    answer = GetQnAResponse($"What is {entity} and when might I want to turn it off?");
+                }
+                else
+                {
+                    answer = GetQnAResponse($"How do I set {entity}");
+                }
+            }
+        }
+        await context.PostAsync(answer);
+
+        context.Wait(MessageReceived);
+    }
     
     [LuisIntent("None")]
     public async Task NoneIntent(IDialogContext context, LuisResult result)
