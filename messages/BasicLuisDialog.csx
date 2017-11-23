@@ -45,16 +45,16 @@ public class BasicLuisDialog : LuisDialog<object>
         await context.PostAsync(answer);
         context.Wait(MessageReceived);
     }
-    /*
+  
     
     [LuisIntent("Need.Use")]
     public async Task NeedUseIntent(IDialogContext context, LuisResult result)
     {
         string message = string.Empty;
 
-        if(result.Result.Entities == null || result.Result.Entities.Count == 0)
+        if(result.Entities == null || result.Entities.Count == 0)
         {
-            message = GetQnAResponse(result.Result.Query);
+            message = GetQnAResponse(result.Query);
         }
         else
         {
@@ -64,7 +64,7 @@ public class BasicLuisDialog : LuisDialog<object>
 
         context.Wait(MessageReceived);
     }
-    */
+  
     
     [LuisIntent("None")]
     public async Task NoneIntent(IDialogContext context, LuisResult result)
