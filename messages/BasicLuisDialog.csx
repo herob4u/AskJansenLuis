@@ -58,7 +58,7 @@ public class BasicLuisDialog : LuisDialog<object>
         }
         else
         {
-            message = GetQnAResponse($"Do we still need to use {result.Result.Entities[0].Entity}");
+            message = GetQnAResponse($"Do we still need to use {result.Entities[0].Entity}");
         }
         await context.PostAsync(message);
 
