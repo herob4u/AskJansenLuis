@@ -191,6 +191,22 @@ public class BasicLuisDialog : LuisDialog<object>
         context.Wait(MessageReceived);
     }
     
+    [LuisIntent("How.Use")]
+    public async Task HowToUse(IDialogContext context, LuisResult result)
+    {
+        if (result.Entities == null || result.Entities.Count == 0)
+        {
+            answer = GetQnAResponse(result.Query);
+        }
+        else
+        {
+            answer = GetQnAResponse($"How do I use {result.Entities[0].Entity}");
+        }
+        await context.PostAsync(answer);
+
+        context.Wait(MessageReceived);
+    }
+    
     [LuisIntent("About.Search")]
     public async Task AboutSearch(IDialogContext context, LuisResult result)
     {
