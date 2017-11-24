@@ -178,13 +178,21 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("How.Modify")]
     public async Task HowToModify(IDialogContext context, LuisResult result)
     {
-        if (result.Entities == null || result.Entities.Count < 2 )
+        if (result.Entities == null || result.Entities.Count <= 0 )
         {
             answer = GetQnAResponse(result.Query);
         }
         else
         {   
-            answer = GetQnAResponse($"How do I {result.Entities[0].Entity} a {result.Entities[1].Entity}");
+            string message = $"How do I {result.Entities[0].Entity}";
+            if(result.Entities.Count > 1)
+            {
+                for(int i = 1 ; i < result.Entities.Count; i++)
+                {
+                    message = string.Join(" ", message, result.Entities[i].Entity);
+                }
+            }
+            answer = GetQnAResponse(message);
         }
         await context.PostAsync(answer);
 
