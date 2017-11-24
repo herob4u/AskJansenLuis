@@ -16,6 +16,13 @@ public class BasicLuisDialog : LuisDialog<object>
     // Caches the user string response to a prompt dialog
     private string stringResult;
     private string answer = string.Empty;
+    Dictionary<string,string> promptQs = new Dictionary<string,string>() {
+            {"Methods Available","What methods are available to search for content"},
+            {"Wildcard Available","What types of things can I search for"},
+            {"Search all documents","What wildcards can be used in searches"},
+            {"Info available to search for","What is the difference between searching for 'Authoring Documents' versus 'Published Documents'"},
+            {"'Current' documents vs other options","How do I just search for all documents"},
+            {"'Authoring Documents' vs 'Published Documents'","What is the difference between searching for 'Current' documents versus other options"}};
     
     public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(Utils.GetAppSetting("LuisAppId"), Utils.GetAppSetting("LuisAPIKey"))))
     {
@@ -171,20 +178,12 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("About.Search")]
     public async Task AboutSearch(IDialogContext context, LuisResult result)
     {
-        Dictionary<string,string> promptQs = new Dictionary<string,string>() {
-            {"Methods Available","What methods are available to search for content"},
-            {"Wildcard Available","What types of things can I search for"},
-            {"Search all documents","What wildcards can be used in searches"},
-            {"Info available to search for","What is the difference between searching for 'Authoring Documents' versus 'Published Documents'"},
-            {"'Current' documents vs other options","How do I just search for all documents"},
-            {"'Authoring Documents' vs 'Published Documents'","What is the difference between searching for 'Current' documents versus other options"}};
-
-        PromptDialog.Choice<string>(context, SearchSelectedAsync, promptQs, "What would you like to know about the search feature?");
-    ,
-
+        PromptDialog.Choice<string>(context, SearchSelectedAsync, promptQs.Keys, "What would you like to know about the search feature?");
+    }
+    
     private async Task SearchSelectedAsync(IDialogContext context, IAwaitable<string> result)
     {
-        await context.PostAsync(GetQnAResponse(await result));
+        await context.PostAsync(GetQnAResponse(promptQs[await result]));
         context.Wait(MessageReceived);
     }
     
