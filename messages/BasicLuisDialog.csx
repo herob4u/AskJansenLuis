@@ -15,6 +15,7 @@ public class BasicLuisDialog : LuisDialog<object>
 {
     // Caches the user string response to a prompt dialog
     private string stringResult;
+    private string answer = string.Empty;
     
     public BasicLuisDialog() : base(new LuisService(new LuisModelAttribute(Utils.GetAppSetting("LuisAppId"), Utils.GetAppSetting("LuisAPIKey"))))
     {
@@ -27,9 +28,7 @@ public class BasicLuisDialog : LuisDialog<object>
     /// </summary>
     [LuisIntent("Define")]
     public async Task Define(IDialogContext context, LuisResult result)
-    {
-        string answer = string.Empty;
-        
+    {  
         await context.PostAsync("Define Intent:");
         
         if(result.Entities != null && result.Entities.Count <= 0)
@@ -45,26 +44,129 @@ public class BasicLuisDialog : LuisDialog<object>
         await context.PostAsync(answer);
         context.Wait(MessageReceived);
     }
-    
+  
     
     [LuisIntent("Need.Use")]
     public async Task NeedUseIntent(IDialogContext context, LuisResult result)
     {
-        string message = string.Empty;
 
-        if(result.Result.Entities == null || result.Result.Entities.Count == 0)
+        if(result.Entities == null || result.Entities.Count == 0)
         {
-            message = GetQnAResponse(result.Result.Query);
+            answer = GetQnAResponse(result.Query);
         }
         else
         {
-            message = GetQnAResponse($"Do we still need to use {result.Result.Entities[0].Entity}");
+            answer = GetQnAResponse($"Do we still need to use {result.Entities[0].Entity}");
         }
-        await context.PostAsync(message);
+        await context.PostAsync(answer);
+
+        context.Wait(MessageReceived);
+    }
+  
+    [LuisIntent("How.Set")]
+    public async Task HowToSet(IDialogContext context, LuisResult result)
+    {
+        if (result.Entities == null || result.Entities.Count == 0)
+        {
+            answer = GetQnAResponse(result.Query);
+        }
+        else
+        {
+            foreach(EntityRecommendation entity in result.Entities)
+            {
+                if(entity.Entity == "Look Ahead")
+                {
+                    answer = GetQnAResponse($"What is {entity.Entity} and when might I want to turn it off?");
+                }
+                else
+                {
+                    answer = GetQnAResponse($"How do I set {entity.Entity}");
+                }
+            }
+        }
+        await context.PostAsync(answer);
 
         context.Wait(MessageReceived);
     }
     
+    [LuisIntent("How.Access")]
+    public async Task HowToAccess(IDialogContext context, LuisResult result)
+    {
+        if (result.Entities == null || result.Entities.Count == 0)
+        {
+            answer = GetQnAResponse(result.Query);
+        }
+        else
+        {
+            await context.PostAsync(result.Entities[0].ToString());
+            answer = GetQnAResponse($"How do I access {result.Entities[0].Entity}");
+        }
+        await context.PostAsync(answer);
+
+        context.Wait(MessageReceived);
+    }
+    
+    [LuisIntent("How.Install")]
+    public async Task HowToInstall(IDialogContext context, LuisResult result)
+    {
+        if (result.Entities == null || result.Entities.Count == 0)
+        {
+            answer = GetQnAResponse(result.Query);
+        }
+        else
+        {
+            answer = GetQnAResponse($"How do I get {result.Entities[0].Entity} installed on my computer");
+        }
+        await context.PostAsync(answer);
+
+        context.Wait(MessageReceived);
+    }
+    
+    [LuisIntent("How.Login")]
+    public async Task HowToLogin(IDialogContext context, LuisResult result)
+    {
+        if (result.Entities == null || result.Entities.Count == 0)
+        {
+            answer = GetQnAResponse(result.Query);
+        }
+        else
+        {
+            answer = GetQnAResponse($"How do I log in to {result.Entities[0].Entity}");
+        }
+        await context.PostAsync(answer);
+
+        context.Wait(MessageReceived);
+    }
+    
+    [LuisIntent("How.Document")]
+    public async Task DocumentInfo(IDialogContext context, LuisResult result)
+    {
+        if (result.Entities == null || result.Entities.Count == 0)
+        {
+            answer = GetQnAResponse(result.Query);
+        }
+        else
+        {
+            foreach (EntityRecommendation entity in result.Entities)
+            {
+                if (entity.Entity == "Icon Color")
+                {
+                    answer = GetQnAResponse($"Why are some document icons different {entity.Entity}? What do they mean?");
+                }
+                else if (entity.Entity == "Relationship")
+                {
+                    answer = GetQnAResponse($"How can I see all the {entity.Entity} a document has with other objects?");
+                }
+                else
+                {
+                    answer = GetQnAResponse($"How do I view a document's {entity.Entity}");
+                }
+            }
+        }
+        await context.PostAsync(answer);
+
+        context.Wait(MessageReceived);
+    }
     
     [LuisIntent("None")]
     public async Task NoneIntent(IDialogContext context, LuisResult result)
@@ -85,19 +187,19 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("DefineOmar")]
     public async Task MyIntent(IDialogContext context, LuisResult result)
     {
-        string answer = GetQnAResponse("Do we still need to use iPas DM");
+        answer = GetQnAResponse("Do we still need to use iPas DM");
         await context.PostAsync(answer);
         //await context.PostAsync($"You have reached the MyIntent intent. You said: {result.Query}"); //
         context.Wait(MessageReceived);
     }
-    
+
     [LuisIntent("Help")]
     public async Task HelpIntent(IDialogContext context, LuisResult result)
     {
         PromptDialog.Choice<string>(context, GetStringFromPrompt, LuisData.HelpTopics, "Select a Help Topic:", null, 3, PromptStyle.Auto);
         
     }
-    
+
     
     /// Handles acquiring string data from any
     /// string PromptDialog and setting the string result variable.
