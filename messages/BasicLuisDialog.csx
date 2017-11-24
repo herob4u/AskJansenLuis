@@ -171,16 +171,16 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("About.Search")]
     public async Task AboutSearch(IDialogContext context, LuisResult result)
     {
-        List<string> promptQs = new List<string>() {
-            {"What methods are available to search for content"},
-            {"What types of things can I search for"},
-            {"What wildcards can be used in searches"},
-            {"What is the difference between searching for 'Authoring Documents' versus 'Published Documents'"},
-            {"How do I just search for all documents"},
-            {"What is the difference between searching for 'Current' documents versus other options"}};
+        Dictionary<string,string> promptQs = new Dictionary<string,string>() {
+            {"Methods Available","What methods are available to search for content"},
+            {"Wildcard Available","What types of things can I search for"},
+            {"Search all documents","What wildcards can be used in searches"},
+            {"Info available to search for","What is the difference between searching for 'Authoring Documents' versus 'Published Documents'"},
+            {"'Current' documents vs other options","How do I just search for all documents"},
+            {"'Authoring Documents' vs 'Published Documents'","What is the difference between searching for 'Current' documents versus other options"}};
 
         PromptDialog.Choice<string>(context, SearchSelectedAsync, promptQs, "What would you like to know about the search feature?");
-    }
+    ,
 
     private async Task SearchSelectedAsync(IDialogContext context, IAwaitable<string> result)
     {
