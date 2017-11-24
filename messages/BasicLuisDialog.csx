@@ -168,6 +168,25 @@ public class BasicLuisDialog : LuisDialog<object>
         context.Wait(MessageReceived);
     }
     
+    public async Task AboutSearch(IDialogContext context, LuisResult result)
+    {
+        List<string> promptQs = new List<string>() {
+            {"What methods are available to search for content"},
+            {"What types of things can I search for"},
+            {"What wildcards can be used in searches"},
+            {"What is the difference between searching for 'Authoring Documents' versus 'Published Documents'"},
+            {"How do I just search for all documents"},
+            {"What is the difference between searching for 'Current' documents versus other options"}};
+
+        PromptDialog.Choice<string>(context, SearchSelectedAsync, promptQs, "What would you like to know about the search feature?");
+    }
+
+    private async Task SearchSelectedAsync(IDialogContext context, IAwaitable<string> result)
+    {
+        await context.PostAsync(GetQnAResponse(await result));
+        context.Wait(MessageReceived);
+    }
+    
     [LuisIntent("None")]
     public async Task NoneIntent(IDialogContext context, LuisResult result)
     {
