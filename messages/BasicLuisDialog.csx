@@ -168,6 +168,7 @@ public class BasicLuisDialog : LuisDialog<object>
         context.Wait(MessageReceived);
     }
     
+    [LuisIntent("About.Search")]
     public async Task AboutSearch(IDialogContext context, LuisResult result)
     {
         List<string> promptQs = new List<string>() {
