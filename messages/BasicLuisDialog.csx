@@ -145,7 +145,7 @@ public class BasicLuisDialog : LuisDialog<object>
         context.Wait(MessageReceived);
     }
     
-    [LuisIntent("How.Document")]
+    [LuisIntent("How.DocumentInfo")]
     public async Task DocumentInfo(IDialogContext context, LuisResult result)
     {
         if (result.Entities == null || result.Entities.Count == 0)
