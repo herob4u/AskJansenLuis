@@ -242,6 +242,27 @@ public class BasicLuisDialog : LuisDialog<object>
         }
     }
     
+    [LuisIntent("How.Document.Action")]
+    private async Task HowDocumentAction(IDialogContext context, LuisResult result)
+    {
+        if (result.Entities == null || result.Entities.Count == 0)
+        {
+            answer = GetQnAResponse(result.Query);
+        }
+        else
+        {
+            string msg = "How do I";
+            foreach (EntityRecommendation entities in result.Entities)
+            {
+                msg = string.Join(" ", msg, entities.Entity);
+            }
+            answer  = GetQnAResponse(msg);
+            await context.PostAsync(answer);
+
+            context.Wait(MessageReceived);
+        }
+    }
+    
     private async Task SearchSelectedAsync(IDialogContext context, IAwaitable<string> result)
     {
         await context.PostAsync(GetQnAResponse(promptQs[await result]));
