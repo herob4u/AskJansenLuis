@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using System.Linq;
 using System.Net;
 
 using Newtonsoft.Json;
@@ -246,6 +247,8 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("How.Document.Action")]
     private async Task HowDocumentAction(IDialogContext context, LuisResult result)
     {
+        List<EntityRecommendation> entityList = result.Result.Entities.Cast<EntityRecommendation>().ToList();
+
         if (result.Entities == null || result.Entities.Count == 0)
         {
             answer = GetQnAResponse(result.Query);
@@ -253,7 +256,16 @@ public class BasicLuisDialog : LuisDialog<object>
         else
         {
             string msg = "How do I";
-            foreach (EntityRecommendation entities in result.Entities)
+            
+            EntityRecommendation verbEntity = entityList.Find(x => x.Type == "Modifications");
+
+            if(verbEntity == null) { return; }
+
+            // Append the verb to the message then pop it from the list.
+            string.Join(" ", msg, verbEntity.Entity);
+            entityList.Remove(verbEntity); 
+            
+            foreach (EntityRecommendation entities in entityList)
             {
                 await context.PostAsync(entities.Type);
                 msg = string.Join(" ", msg, entities.Entity);
