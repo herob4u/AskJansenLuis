@@ -255,6 +255,7 @@ public class BasicLuisDialog : LuisDialog<object>
             string msg = "How do I";
             foreach (EntityRecommendation entities in result.Entities)
             {
+                await context.PostAsync(entities.Type);
                 msg = string.Join(" ", msg, entities.Entity);
             }
             await context.PostAsync(msg);
