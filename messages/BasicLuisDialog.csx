@@ -276,7 +276,7 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("None")]
     public async Task NoneIntent(IDialogContext context, LuisResult result)
     {
-        await context.PostAsync($"You have reached the none intent. You said: {result.Query}"); //
+        context.PostAsync(GetQnAResult(result.Query));
         context.Wait(MessageReceived);
     }
     
