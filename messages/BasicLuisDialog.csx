@@ -248,6 +248,7 @@ public class BasicLuisDialog : LuisDialog<object>
     private async Task HowDocumentAction(IDialogContext context, LuisResult result)
     {
         List<EntityRecommendation> entityList = result.Result.Entities.Cast<EntityRecommendation>().ToList();
+        await context.PostAsync("Converted To List");
 
         if (result.Entities == null || result.Entities.Count == 0)
         {
