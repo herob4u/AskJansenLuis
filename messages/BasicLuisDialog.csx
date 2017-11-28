@@ -235,6 +235,7 @@ public class BasicLuisDialog : LuisDialog<object>
             {
                 msg = string.Join(" ", msg, entities.Entity);
             }
+            await context.PostAsync(msg);
             answer  = GetQnAResponse(msg);
             await context.PostAsync(answer);
 
