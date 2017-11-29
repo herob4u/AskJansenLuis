@@ -1,1 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
 
+<HelpTopics>
+  <About>
+    <SPF display ="SPF/SmartPlant Foundation">
+      <Define>What is SPF/SmartPlant Foundation</Define>
+      <Useful>How can SPF help me?</Useful>
+      <Advantages>How can SPF be useful to the project?</Advantages>
+    </SPF>
+    
+    <SharePoint>
+      <Useful>Do we still need to use Sharepoint?</Useful>
+    </SharePoint>
+    
+    <iPas>
+      <Useful>Do we still need to use iPas DM?</Useful>
+    </iPas>
+    
+    <Aconex>
+      <Useful>Do we still need to use Aconex?</Useful>
+    </Aconex>
+  </About>
+  
+  
+  <Accessibility>
+    <SPF display ="SPF/SmartPlant Foundation">
+      <Access> How do I access SPF?</Access>
+      <Install> How do I get the SPF Desktop Client installed on my computer?</Install>
+      <Login> How do I log in to SPF?</Login>
+    </SPF>
+
+    <CitrixGateway>
+      <Access>How do I access the Citrix Gateway to run SPF/DC as a virtual app?</Access>
+    </CitrixGateway>
+  </Accessibility>
+  
+  <Account>
+    <Subscription> How can I edit or remove subscriptions</Subscription>
+    <Notifications> How do I see my list of notifications</Notifications>
+    <PassReset> How do I reset my password</PassReset>
+  </Account>
+
+</HelpTopics>
