@@ -17,6 +17,7 @@ class HelpTopicSelector
     {
         
         xmlDoc = new XmlDocument();
+        /*
         try
         {
             xmlDoc.Load(HttpContext.Current.Server.MapPath("").TrimEnd(new char[] {'a','p','i' }) + "/Controllers/HelpTopics.xml");
@@ -25,7 +26,7 @@ class HelpTopicSelector
         {
             System.Diagnostics.Debug.WriteLine(ex.Message);
         }
-
+*/
         Initialize();
     }
 
@@ -36,7 +37,7 @@ class HelpTopicSelector
         foreach(XmlNode node in xmlDoc.DocumentElement.ChildNodes)
         {
             currNodes.Add(node.LocalName, node);
-            System.Diagnostics.Debug.WriteLine(node.LocalName);
+            //System.Diagnostics.Debug.WriteLine(node.LocalName);
         }
     }
 
@@ -47,7 +48,7 @@ class HelpTopicSelector
         foreach (XmlNode node in xmlDoc.DocumentElement.ChildNodes)
         {
             currNodes.Add(node.LocalName, node);
-            System.Diagnostics.Debug.WriteLine(node.LocalName);
+            //System.Diagnostics.Debug.WriteLine(node.LocalName);
         }
     }
 
