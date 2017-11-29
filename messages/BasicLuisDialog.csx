@@ -80,7 +80,7 @@ public class BasicLuisDialog : LuisDialog<object>
         context.Wait(MessageReceived);
     }
     
-    #region HELP_INTENT
+
     
     [LuisIntent("Help")]
     public async Task HelpIntent(IDialogContext context, LuisResult result)
@@ -95,8 +95,6 @@ public class BasicLuisDialog : LuisDialog<object>
         var message = await result;
         context.Wait(MessageReceived);
     }
-    
-    #endregion
     
     /// Handles acquiring string data from any
     /// string PromptDialog and setting the string result variable.
