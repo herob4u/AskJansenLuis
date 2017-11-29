@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using System.Collections.Generic;
+using AskJansenLuis.Database;
 
 [Serializable]
 class HelpDialog : IDialog
