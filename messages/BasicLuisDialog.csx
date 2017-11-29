@@ -80,13 +80,23 @@ public class BasicLuisDialog : LuisDialog<object>
         context.Wait(MessageReceived);
     }
     
+    #region HELP_INTENT
+    
     [LuisIntent("Help")]
     public async Task HelpIntent(IDialogContext context, LuisResult result)
     {
-        PromptDialog.Choice<string>(context, GetStringFromPrompt, LuisData.HelpTopics, "Select a Help Topic:", null, 3, PromptStyle.Auto);
+         context.Call(new HelpDialog(), ResumeAfterHelp);
         
     }
     
+    private async Task ResumeAfterHelp(IDialogContext context, IAwaitable<object> result)
+    {
+        await context.PostAsync("Done HelpDialog");
+        var message = await result;
+        context.Wait(MessageReceived);
+    }
+    
+    #endregion
     
     /// Handles acquiring string data from any
     /// string PromptDialog and setting the string result variable.
