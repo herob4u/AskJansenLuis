@@ -301,7 +301,7 @@ public class BasicLuisDialog : LuisDialog<object>
     [LuisIntent("Help")]
     public async Task HelpIntent(IDialogContext context, LuisResult result)
     {
-         context.Call(new HelpDialog(), ResumeAfterHelp);
+        //context.Call(new HelpDialog(), ResumeAfterHelp);
         
     }
 
